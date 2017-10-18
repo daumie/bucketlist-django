@@ -27,3 +27,28 @@ def bucketlist_list(request):
 
 # view which corresponds to an individual bucketlist
 
+@csrf_exempt
+def bucketlist_detail(request, pk):
+    """
+    Retrieve, update or delete a bucketlist.
+    """
+    try:
+        bucketlist = Bucketlist.objects.get(pk=pk)
+    except Bucketlist.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = BucketlistSerializer(bucketlist)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = BucketlistSerializer(bucketlist, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        bucketlist.delete()
+        return HttpResponse(status=204)
