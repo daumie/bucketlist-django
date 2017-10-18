@@ -13,8 +13,8 @@ def bucketlist_list(request):
     List all bucket lists or create a bucketlist.
     """
     if request.method == 'GET':
-        bucketlist = Bucketlist.objects.all()
-        serializer = BucketlistSerializer(bucketlist, many=True)
+        bucketlists = Bucketlist.objects.all()
+        serializer = BucketlistSerializer(bucketlists, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
