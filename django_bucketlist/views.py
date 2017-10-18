@@ -1,52 +1,41 @@
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from django_bucketlist.models import Bucketlist
 from django_bucketlist.serializers import BucketlistSerializer
-from django.http import Http404
+from rest_framework import mixins
+from rest_framework import generics
 
-class BucketlistList(APIView):
+class BucketlistList(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     generics.GenericAPIView):
     """
     List all bucket lists or create a bucketlist.
     """
-    def get(self, request, format=None):
-        bucketlists = Bucketlist.objects.all()
-        serializer = BucketlistSerializer(bucketlists, many=True)
-        return Response(serializer.data)
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-    def post(self, request, format=None):
-        serializer = BucketlistSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
 
 # view which corresponds to an individual bucketlist
 
-class BucketlistDetail(APIView):
+class BucketlistDetail(mixins.RetrieveModelMixin,
+                       mixins.UpdateModelMixin,
+                       mixins.DestroyModelMixin,
+                       generics.GenericAPIView):
     """
     Retrieve, update or delete a bucketlist instance.
     """
-    def get_object(self, pk):
-        try:
-           return Bucketlist.objects.get(pk=pk)
-        except Bucketlist.DoesNotExist:
-            raise Http404
+  
+    queryset = Bucketlist.objects.all()
+    serializer_class = BucketlistSerializer
 
-    def get(self, request, pk, format= None):
-        bucketlist = self.get_object(pk)
-        serializer = BucketlistSerializer(bucketlist)
-        return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
-    def put(self, request, pk, format= None):
-        bucketlist = self.get_object(pk)
-        serializer = BucketlistSerializer(bucketlist, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
-    def delete(self, request, pk, format= None):
-        bucketlist = self.get_object(pk)
-        bucketlist.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, *args, **kwargs):
+      return self.destroy(request, *args, **kwargs)
