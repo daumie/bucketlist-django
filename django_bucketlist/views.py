@@ -11,7 +11,7 @@ class BucketlistList(generics.ListCreateAPIView):
     """
     queryset = Bucketlist.objects.all()
     serializer_class = BucketlistSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -23,7 +23,6 @@ class BucketlistList(generics.ListCreateAPIView):
         """
         user = self.request.user
         return Bucketlist.objects.filter(owner=user)
-    
 # view which corresponds to an individual bucketlist
 
 class BucketlistDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -32,7 +31,7 @@ class BucketlistDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Bucketlist.objects.filter()
     serializer_class = BucketlistSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
