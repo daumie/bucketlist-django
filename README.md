@@ -1,5 +1,9 @@
 # Bucketlist API and Web_Application
 
+[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 `"Before the day I die I must visit Canada"`. Alot of people have such phrases. This API creates  the foundaton of an  application that will  help track things you want to do before one dies.
 
 ## Bucketlist API
