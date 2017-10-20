@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 
 
 class BucketlistSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    
     class Meta:
         model = Bucketlist
         fields =('id', 'title', 'description', 'style', 'owner')
-        owner = serializers.ReadOnlyField(source='owner.username')
 
 class UserSerializer(serializers.ModelSerializer):
     bucketlist = serializers.PrimaryKeyRelatedField(many=True, queryset=Bucketlist.objects.all())
