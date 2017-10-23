@@ -1,5 +1,5 @@
-from django_bucketlist.models import Bucketlist
-from django_bucketlist.serializers import BucketlistSerializer
+from django_bucketlist.models import Bucketlist, Item
+from django_bucketlist.serializers import BucketlistSerializer, ItemSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 from django_bucketlist.serializers import UserSerializer
@@ -41,3 +41,52 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class ItemList(generics.ListCreateAPIView):
+    """
+    List all item lists or create a bucketlist.
+    """
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def perform_create(self, serializer):
+
+        serializer.save()
+
+    def get_queryset(self):
+        """
+         This view should return a list of all the items 
+         for the curently authenticated user
+        """
+        user = self.request.user
+        return Item.objects
+# view which corresponds to an individual bucketlist
+
+class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a bucketlist instance.
+    """
+    queryset = Item.objects.filter()
+    serializer_class = ItemSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+class ItemListAll(generics.ListAPIView):
+    """
+    List all item lists or create a bucketlist.
+    """
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def perform_create(self, serializer):
+
+        serializer.save()
+
+    def get_queryset(self):
+        """
+         This view should return a list of all the items 
+         for the curently authenticated user
+        """
+        user = self.request.user
+        return Item.objects
