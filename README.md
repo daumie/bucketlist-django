@@ -69,18 +69,6 @@ Install requirements
 
 ![Retrieve Item](documentation/get_post_items.png)
 
-### DELETE /api/v1/bucketlists/items  Delete item in bucketlist 2
+### DELETE /api/v1/bucketlists/items  Delete item in bucketlist 
 
 ![Delete Item](documentation/delete_update_item.png)
-
-### GET /bucketlists/items  List items remaining after deletion
-
-![List Item](assets/static/img/get_items_after_deletion.png)
-
-### GET /api/v1/bucketlists?limit=20  Test pagination
-
-![Test pagination](assets/static/img/test_pagination.png)
-
-### GET /api/v1/bucketlists?q=Dance  Search in a bucketlist
-
-![Search Bucketlists](assets/static/img/search_bucketlist.png)
